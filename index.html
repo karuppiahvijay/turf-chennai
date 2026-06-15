@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Discover and book premium sports turfs in Chennai instantly. TurfNet offers the best football pitches, box cricket nets, and badminton courts near you.">
+  <title>TurfNet Chennai - Discover & Book Sports Turfs Near You</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header / Navigation -->
+    <header>
+      <div class="container navbar">
+        <a href="#home" class="logo">
+          TURFNET<span class="logo-dot"></span>CHENNAI
+        </a>
+        <nav>
+          <ul class="nav-links">
+            <li><a href="#home" id="nav-home" class="active">Home</a></li>
+            <li><a href="#explore" id="nav-explore">Explore Turfs</a></li>
+            <li><a href="#bookings" id="nav-bookings">My Bookings</a></li>
+            <li><a href="#host" id="nav-host">Host a Turf</a></li>
+          </ul>
+        </nav>
+        <div class="nav-actions">
+          <a href="#explore" class="btn btn-primary btn-sm">Book Pitch Now</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- SECTION: HOME -->
+      <section id="home-section" class="section active">
+        <div class="container hero">
+          <span class="badge badge-neon hero-badge">Chennai's Ultimate Turf Booking Hub</span>
+          <h1>Elevate Your Game. Play on Chennai's Finest Pitches.</h1>
+          <p>Book premium football pitches, box cricket arenas, and outdoor volleyball courts across Chennai in seconds.</p>
+          
+          <div style="display: flex; gap: 16px; justify-content: center; margin-bottom: 60px;">
+            <a href="#explore" class="btn btn-primary">Find a Turf Near Me</a>
+            <a href="#host" class="btn btn-secondary">Register Your Turf</a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat-item">
+              <span class="stat-number neon-text" id="stat-turfs-count">6+</span>
+              <span class="stat-label">Premium Arenas</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number cyan-text" id="stat-slots-booked">1,240+</span>
+              <span class="stat-label">Active Bookings</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number neon-text">4.8★</span>
+              <span class="stat-label">Average Rating</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: EXPLORE -->
+      <section id="explore-section" class="section">
+        <div class="container">
+          <div class="explore-layout">
+            <!-- Sidebar Filters -->
+            <aside class="filters-sidebar glass-panel">
+              <div class="filter-group">
+                <h3>Location</h3>
+                <div class="select-wrapper">
+                  <select id="filter-area" class="custom-select">
+                    <!-- Loaded dynamically via js -->
+                  </select>
+                </div>
+              </div>
+
+              <div class="filter-group">
+                <h3>Select Sport</h3>
+                <div class="pills-container" id="filter-sports-container">
+                  <!-- Loaded dynamically via js -->
+                </div>
+              </div>
+
+              <div class="filter-group">
+                <h3>Max Price (per hour)</h3>
+                <div class="price-range-container">
+                  <input type="range" id="filter-price-range" class="slider-input" min="800" max="3000" step="100" value="3000">
+                  <div class="range-inputs">
+                    <span>₹800</span>
+                    <span class="neon-text" id="price-range-value">₹3000</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="filter-group">
+                <h3>Amenities</h3>
+                <div class="pills-container" id="filter-amenities-container">
+                  <!-- Loaded dynamically via js -->
+                </div>
+              </div>
+
+              <button id="btn-reset-filters" class="btn btn-secondary" style="width: 100%; margin-top: 16px;">
+                Reset All Filters
+              </button>
+            </aside>
+
+            <!-- Turf Grid & Search -->
+            <div class="explore-content">
+              <div class="search-bar-container">
+                <div class="search-input-wrapper">
+                  <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                  <input type="text" id="explore-search" class="search-input" placeholder="Search by turf name, area, or sport...">
+                </div>
+              </div>
+
+              <div class="turf-grid" id="turf-cards-grid">
+                <!-- Cards rendered dynamically via JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: BOOKINGS DASHBOARD -->
+      <section id="bookings-section" class="section">
+        <div class="container bookings-section">
+          <div class="dashboard-title-row">
+            <div>
+              <h2 style="font-size: 2rem;">My Booking History</h2>
+              <p style="color: var(--text-secondary);">Manage your slot bookings and view invoices.</p>
+            </div>
+            <a href="#explore" class="btn btn-primary">Book New Slot</a>
+          </div>
+
+          <div id="bookings-dashboard-container">
+            <!-- Dynamic list of booked items -->
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: HOST A TURF -->
+      <section id="host-section" class="section">
+        <div class="container host-layout glass-panel" style="padding: 48px;">
+          <div class="host-header">
+            <h2>Host Your Turf on TurfNet</h2>
+            <p>Reach thousands of sports enthusiasts in Chennai and automate your booking system today.</p>
+          </div>
+
+          <form id="host-turf-form">
+            <div class="form-group">
+              <label for="host-name">Turf Name *</label>
+              <input type="text" id="host-name" class="form-control" placeholder="e.g. Bernabeu Sports Arena" required>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="host-area">Location Area *</label>
+                <select id="host-area" class="form-control" required style="background-color: var(--bg-secondary); color: var(--text-primary); border: 1px solid var(--border-glass);">
+                  <option value="" disabled selected>Select Area</option>
+                  <option value="Nungambakkam">Nungambakkam</option>
+                  <option value="Adyar">Adyar</option>
+                  <option value="Velachery">Velachery</option>
+                  <option value="Anna Nagar">Anna Nagar</option>
+                  <option value="T. Nagar">T. Nagar</option>
+                  <option value="ECR">ECR</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="host-price">Price Per Hour (₹) *</label>
+                <input type="number" id="host-price" class="form-control" placeholder="e.g. 1500" min="500" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Sports Offered * (Select all that apply)</label>
+              <div class="form-pills-selection" id="host-sports-list">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Amenities Available</label>
+              <div class="form-pills-selection" id="host-amenities-list">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="host-description">Turf Description *</label>
+              <textarea id="host-description" class="form-control" rows="4" placeholder="Describe your pitch size, grass brand, lighting setup, locker systems etc." required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="host-map">Google Maps Pin Location URL (Optional)</label>
+              <input type="url" id="host-map" class="form-control" placeholder="e.g. https://maps.google.com/?q=My+Turf">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; margin-top: 16px;">
+              Register Turf Now
+            </button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container footer-content">
+        <div class="footer-brand">
+          <div class="logo">TURFNET<span class="logo-dot"></span>CHENNAI</div>
+          <p>The premium sports booking network.</p>
+        </div>
+        <div class="footer-copyright">
+          &copy; 2026 TurfNet Chennai. Made for Athletes.
+        </div>
+      </div>
+    </footer>
+
+    <!-- MODAL: TURF DETAIL VIEW -->
+    <div class="modal-overlay" id="turf-detail-modal">
+      <div class="modal-container glass-panel">
+        <div class="modal-header">
+          <h2 id="detail-turf-name">Turf Details</h2>
+          <button class="modal-close" onclick="closeModal('turf-detail-modal')">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="detail-image-gallery">
+            <img id="detail-turf-image" src="" alt="Turf Visual">
+          </div>
+          
+          <div class="detail-meta-grid">
+            <div class="detail-meta-card">
+              <h4>Location</h4>
+              <p id="detail-turf-location" class="cyan-text">Adyar</p>
+            </div>
+            <div class="detail-meta-card">
+              <h4>Rating</h4>
+              <p id="detail-turf-rating" class="neon-text">4.8★</p>
+            </div>
+            <div class="detail-meta-card">
+              <h4>Hourly Price</h4>
+              <p id="detail-turf-price">₹1500</p>
+            </div>
+          </div>
+
+          <div class="detail-info-block">
+            <h3>Overview</h3>
+            <p id="detail-turf-description" style="color: var(--text-secondary);"></p>
+          </div>
+
+          <div class="detail-info-block">
+            <h3>Amenities Available</h3>
+            <div class="detail-amenities-list" id="detail-turf-amenities">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <div class="detail-footer">
+            <a href="" id="detail-turf-map-link" target="_blank" class="btn btn-secondary">
+              View on Map
+            </a>
+            <button id="detail-btn-book-now" class="btn btn-primary">
+              Proceed to Booking
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: BOOKING SIMULATOR -->
+    <div class="modal-overlay" id="booking-simulator-modal">
+      <div class="modal-container glass-panel">
+        <div class="modal-header">
+          <h2>Book Your Slot</h2>
+          <button class="modal-close" onclick="closeModal('booking-simulator-modal')">&times;</button>
+        </div>
+        <div class="modal-body">
+          <h3 id="booking-modal-turf-name" class="neon-text" style="font-size: 1.4rem; margin-bottom: 20px;">The Arena</h3>
+          
+          <!-- Select Sport -->
+          <div class="booking-form-group">
+            <div class="booking-section-title">Select Sport Category</div>
+            <div class="select-wrapper">
+              <select id="booking-sport-select" class="custom-select">
+                <!-- Dynamically populated -->
+              </select>
+            </div>
+          </div>
+
+          <!-- Select Date -->
+          <div class="booking-form-group">
+            <div class="booking-section-title">Select Play Date</div>
+            <div class="booking-date-picker" id="booking-date-picker">
+              <!-- Dates loaded dynamically -->
+            </div>
+          </div>
+
+          <!-- Select Slot -->
+          <div class="booking-form-group">
+            <div class="booking-section-title">Select Time Slot</div>
+            <div class="slots-grid" id="booking-slots-grid">
+              <!-- Loaded dynamically -->
+            </div>
+          </div>
+
+          <!-- Add-ons / Gear Rentals -->
+          <div class="booking-form-group">
+            <div class="booking-section-title">Optional Add-ons & Equipment Rental</div>
+            <div class="addons-grid">
+              <div>
+                <input type="checkbox" id="addon-ball" class="addon-card-input" data-price="150">
+                <label for="addon-ball" class="addon-card-label">
+                  <span class="checkbox-dot"></span>
+                  <div class="addon-info">
+                    <span class="addon-title">Pro Matchball</span>
+                    <span class="addon-price">+ ₹150 / match</span>
+                  </div>
+                </label>
+              </div>
+
+              <div>
+                <input type="checkbox" id="addon-bibs" class="addon-card-input" data-price="200">
+                <label for="addon-bibs" class="addon-card-label">
+                  <span class="checkbox-dot"></span>
+                  <div class="addon-info">
+                    <span class="addon-title">Set of Bibs (10x)</span>
+                    <span class="addon-price">+ ₹200 / match</span>
+                  </div>
+                </label>
+              </div>
+
+              <div>
+                <input type="checkbox" id="addon-water" class="addon-card-input" data-price="100">
+                <label for="addon-water" class="addon-card-label">
+                  <span class="checkbox-dot"></span>
+                  <div class="addon-info">
+                    <span class="addon-title">Mineral Water Box</span>
+                    <span class="addon-price">+ ₹100 / box</span>
+                  </div>
+                </label>
+              </div>
+
+              <div>
+                <input type="checkbox" id="addon-referee" class="addon-card-input" data-price="500">
+                <label for="addon-referee" class="addon-card-label">
+                  <span class="checkbox-dot"></span>
+                  <div class="addon-info">
+                    <span class="addon-title">Book a Referee</span>
+                    <span class="addon-price">+ ₹500 / match</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Price Summary -->
+          <div class="booking-summary-card">
+            <div class="summary-row">
+              <span id="summary-hourly-details">Base Price (1 hr)</span>
+              <span id="summary-base-price">₹1500</span>
+            </div>
+            <div class="summary-row" id="summary-addons-row" style="display: none;">
+              <span>Addons Total</span>
+              <span id="summary-addons-price">₹0</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-row">
+              <span class="summary-total">Total Amount</span>
+              <span class="summary-total" id="summary-total-price">₹1500</span>
+            </div>
+          </div>
+
+          <!-- Booking Actions -->
+          <div class="detail-footer">
+            <button class="btn btn-secondary" onclick="closeModal('booking-simulator-modal')">Cancel</button>
+            <button id="booking-btn-pay-now" class="btn btn-primary" disabled>Confirm & Pay Simulated</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toast-container"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
