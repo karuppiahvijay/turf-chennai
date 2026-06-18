@@ -20,7 +20,7 @@ const KICK_AND_FLICK_DATA = {
   sports: [
     {
       id: "sport_football",
-      name: "Football (5v5 / 7v7)",
+      name: "Football",
       image: "https://images.unsplash.com/photo-1577223625856-745524fb081b?auto=format&fit=crop&w=800&q=80",
       pricePerHour: 1500,
       peakHourPrice: 1800,
@@ -28,7 +28,7 @@ const KICK_AND_FLICK_DATA = {
     },
     {
       id: "sport_cricket",
-      name: "Box Cricket & Nets",
+      name: "Cricket",
       image: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80",
       pricePerHour: 1200,
       peakHourPrice: 1500,
@@ -36,7 +36,7 @@ const KICK_AND_FLICK_DATA = {
     },
     {
       id: "sport_volleyball",
-      name: "Sand Volleyball Court",
+      name: "Volleyball",
       image: "https://images.unsplash.com/photo-1592656094267-764a45028570?auto=format&fit=crop&w=800&q=80",
       pricePerHour: 1000,
       peakHourPrice: 1200,
