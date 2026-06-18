@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Kick & Flick Arena</title>
+  <title>Register - Kick & Flick Arena</title>
   <style>
     :root {
       --primary-neon: #facc15;
@@ -24,11 +24,9 @@
       justify-content: center;
       align-items: center;
       height: 100%;
-      /* Use the new logo/image as the background */
       background: url('assets/images/kick_flick_logo.jpg') no-repeat center center/cover;
       position: relative;
     }
-    /* Dark overlay to make the login box pop and text readable */
     .login-container::before {
       content: "";
       position: absolute;
@@ -83,7 +81,7 @@
     .form-group input:focus {
       outline: none;
       border-color: var(--primary-neon);
-      box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+      box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.2);
     }
     .btn-login {
       width: 100%;
@@ -91,7 +89,7 @@
       border: none;
       border-radius: 6px;
       background: var(--primary-neon);
-      color: white;
+      color: black;
       font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
@@ -99,7 +97,7 @@
       margin-top: 10px;
     }
     .btn-login:hover {
-      background: #16a34a;
+      background: #eab308;
     }
     .back-link, .register-link {
       display: block;
@@ -122,57 +120,58 @@
   <div class="login-container">
     <div class="login-box">
       <div class="login-header">
-        <h2>Welcome Back</h2>
-        <p>Sign in to your Kick & Flick account</p>
+        <h2>Create an Account</h2>
+        <p>Join Kick & Flick Arena</p>
       </div>
-      <form id="loginForm">
+      <form id="registerForm">
         <div class="form-group">
           <label for="email">Email Address</label>
           <input type="email" id="email" placeholder="Enter your email" required>
         </div>
         <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" placeholder="Enter your password" required>
+          <label for="password">Password (min 6 characters)</label>
+          <input type="password" id="password" placeholder="Create a password" required minlength="6">
         </div>
-        <button type="submit" class="btn-login">Login to Dashboard</button>
+        <button type="submit" class="btn-login">Register Account</button>
       </form>
-      <a href="register.html" class="register-link">Don't have an account? Register here</a>
+      <a href="login.html" class="register-link">Already have an account? Login here</a>
       <a href="index.html" class="back-link">&larr; Back to Home</a>
     </div>
   </div>
+
   <!-- Firebase Auth Logic -->
   <script type="module" src="js/firebase-auth.js"></script>
   <script type="module">
     document.addEventListener('DOMContentLoaded', () => {
-      const loginForm = document.getElementById('loginForm');
+      const registerForm = document.getElementById('registerForm');
       
-      loginForm.addEventListener('submit', async (e) => {
+      registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
-        const submitBtn = loginForm.querySelector('.btn-login');
+        const submitBtn = registerForm.querySelector('.btn-login');
         
         try {
-          submitBtn.textContent = 'Logging in...';
+          submitBtn.textContent = 'Creating account...';
           submitBtn.disabled = true;
           
           // Wait for Firebase to load
           const auth = window.firebaseAuth;
-          const { signInWithEmailAndPassword, setPersistence, browserLocalPersistence } = window.firebaseAuthMethods;
+          const { createUserWithEmailAndPassword, setPersistence, browserLocalPersistence } = window.firebaseAuthMethods;
 
-          // Ensure it remembers the user on the device
+          // Ensure it remembers the user
           await setPersistence(auth, browserLocalPersistence);
           
-          // Sign in
-          await signInWithEmailAndPassword(auth, email, password);
+          // Register user
+          await createUserWithEmailAndPassword(auth, email, password);
           
           // Redirect on success
           window.location.href = 'index.html';
           
         } catch (error) {
-          console.error("Login failed:", error.message);
-          alert("Login failed: " + error.message);
-          submitBtn.textContent = 'Login to Dashboard';
+          console.error("Registration failed:", error.message);
+          alert("Registration failed: " + error.message);
+          submitBtn.textContent = 'Register Account';
           submitBtn.disabled = false;
         }
       });
