@@ -21,7 +21,7 @@ const KICK_AND_FLICK_DATA = {
     {
       id: "sport_football",
       name: "Football",
-      image: "https://images.unsplash.com/photo-1577223625856-745524fb081b?auto=format&fit=crop&w=800&q=80",
+      image: "https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg?auto=compress&cs=tinysrgb&w=800",
       pricePerHour: 1500,
       peakHourPrice: 1800,
       slots: ["06:00 AM", "07:00 AM", "08:00 AM", "04:00 PM", "05:00 PM", "06:00 PM", "07:00 PM", "08:00 PM", "09:00 PM", "10:00 PM", "11:00 PM"]
@@ -29,7 +29,7 @@ const KICK_AND_FLICK_DATA = {
     {
       id: "sport_cricket",
       name: "Cricket",
-      image: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80",
+      image: "https://images.pexels.com/photos/3718409/pexels-photo-3718409.jpeg?auto=compress&cs=tinysrgb&w=800",
       pricePerHour: 1200,
       peakHourPrice: 1500,
       slots: ["06:00 AM", "07:00 AM", "09:00 AM", "04:00 PM", "05:00 PM", "06:00 PM", "07:00 PM", "08:00 PM", "09:00 PM", "10:00 PM", "11:00 PM"]
@@ -37,7 +37,7 @@ const KICK_AND_FLICK_DATA = {
     {
       id: "sport_volleyball",
       name: "Volleyball",
-      image: "https://images.unsplash.com/photo-1592656094267-764a45028570?auto=format&fit=crop&w=800&q=80",
+      image: "https://images.pexels.com/photos/1263426/pexels-photo-1263426.jpeg?auto=compress&cs=tinysrgb&w=800",
       pricePerHour: 1000,
       peakHourPrice: 1200,
       slots: ["06:00 AM", "07:00 AM", "08:00 AM", "04:00 PM", "05:00 PM", "06:00 PM", "07:00 PM", "08:00 PM", "09:00 PM"]

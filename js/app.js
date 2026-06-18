@@ -313,6 +313,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Pay Action Binding
   const payBtn = document.getElementById("booking-btn-pay-now");
   payBtn.addEventListener("click", () => {
+    // Check if user is logged in
+    const auth = window.firebaseAuth;
+    if (!auth || !auth.currentUser) {
+      alert("You must be logged in to book a slot. Please login or register an account.");
+      window.location.href = "login.html";
+      return;
+    }
+
     const sport = appState.selectedSport;
     const dateObj = appState.selectedDate;
     const slot = appState.selectedSlot;
