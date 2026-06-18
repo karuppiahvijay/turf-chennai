@@ -26,8 +26,16 @@ document.addEventListener("DOMContentLoaded", () => {
       activeSection.classList.add("active");
     }
 
-    // Toggle active nav links
+    // Toggle active nav links (desktop)
     document.querySelectorAll(".nav-links a").forEach(link => {
+      link.classList.remove("active");
+      if (link.getAttribute("href") === `#${hash}`) {
+        link.classList.add("active");
+      }
+    });
+
+    // Toggle active nav links (mobile bottom bar)
+    document.querySelectorAll(".mobile-nav-link").forEach(link => {
       link.classList.remove("active");
       if (link.getAttribute("href") === `#${hash}`) {
         link.classList.add("active");

@@ -1,12 +1,12 @@
-// Dedicated data for Kick & Flick Arena
+// Dedicated data for Kick & Flick Arena - Ernavoor, Chennai
 const KICK_AND_FLICK_DATA = {
   name: "Kick & Flick Arena",
-  tagline: "Chennai's Premier Multi-Sport Turf",
-  area: "Adyar, Chennai",
+  tagline: "Ernavoor's Premier Multi-Sport Turf",
+  area: "Ernavoor, Chennai",
   rating: 4.8,
   reviewsCount: 382,
-  description: "Welcome to Kick & Flick Arena, Adyar's ultimate sports destination. We feature professional-grade shock-absorption turf for Football and Box Cricket, alongside a premium floodlit Volleyball court. Open 24/7 with international-spec LED lighting, changing rooms, and viewing lounges.",
-  locationUrl: "https://maps.google.com/?q=Adyar+Chennai",
+  description: "Welcome to Kick & Flick Arena, Ernavoor's ultimate sports destination. We feature professional-grade shock-absorption turf for Football and Box Cricket, alongside a premium floodlit Volleyball court. Open 24/7 with international-spec LED lighting, changing rooms, and viewing lounges.",
+  locationUrl: "https://maps.google.com/?q=Ernavoor+Chennai",
   amenities: [
     { name: "Pro LED Floodlights", icon: "💡" },
     { name: "Safe Netting Cage", icon: "🕸️" },
