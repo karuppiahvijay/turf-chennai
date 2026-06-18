@@ -29,7 +29,7 @@ const KICK_AND_FLICK_DATA = {
     {
       id: "sport_cricket",
       name: "Cricket",
-      image: "https://images.pexels.com/photos/3718409/pexels-photo-3718409.jpeg?auto=compress&cs=tinysrgb&w=800",
+      image: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80",
       pricePerHour: 1200,
       peakHourPrice: 1500,
       slots: ["06:00 AM", "07:00 AM", "09:00 AM", "04:00 PM", "05:00 PM", "06:00 PM", "07:00 PM", "08:00 PM", "09:00 PM", "10:00 PM", "11:00 PM"]
