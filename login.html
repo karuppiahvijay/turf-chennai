@@ -6,9 +6,9 @@
   <title>Login - Kick & Flick Arena</title>
   <style>
     :root {
-      --primary-neon: #22c55e;
-      --bg-dark: #0f172a;
-      --card-bg: rgba(15, 23, 42, 0.85);
+      --primary-neon: #facc15;
+      --bg-dark: #000000;
+      --card-bg: rgba(10, 10, 10, 0.85);
       --text-main: #f8fafc;
     }
     body, html {
@@ -121,7 +121,7 @@
         <h2>Welcome Back</h2>
         <p>Sign in to your Kick & Flick account</p>
       </div>
-      <form action="index.html" method="GET">
+      <form id="loginForm">
         <div class="form-group">
           <label for="email">Email Address</label>
           <input type="email" id="email" placeholder="Enter your email" required>
@@ -135,5 +135,43 @@
       <a href="index.html" class="back-link">&larr; Back to Home</a>
     </div>
   </div>
+  <!-- Firebase Auth Logic -->
+  <script type="module" src="js/firebase-auth.js"></script>
+  <script type="module">
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginForm = document.getElementById('loginForm');
+      
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const submitBtn = loginForm.querySelector('.btn-login');
+        
+        try {
+          submitBtn.textContent = 'Logging in...';
+          submitBtn.disabled = true;
+          
+          // Wait for Firebase to load
+          const auth = window.firebaseAuth;
+          const { signInWithEmailAndPassword, setPersistence, browserLocalPersistence } = window.firebaseAuthMethods;
+
+          // Ensure it remembers the user on the device
+          await setPersistence(auth, browserLocalPersistence);
+          
+          // Sign in
+          await signInWithEmailAndPassword(auth, email, password);
+          
+          // Redirect on success
+          window.location.href = 'index.html';
+          
+        } catch (error) {
+          console.error("Login failed:", error.message);
+          alert("Login failed: " + error.message + "\n\n(Make sure you added your Firebase API key in js/firebase-auth.js!)");
+          submitBtn.textContent = 'Login to Dashboard';
+          submitBtn.disabled = false;
+        }
+      });
+    });
+  </script>
 </body>
 </html>

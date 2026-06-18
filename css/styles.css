@@ -2,15 +2,15 @@
 
 :root {
   /* Color Tokens */
-  --bg-primary: #0b0f19;
-  --bg-secondary: #121826;
-  --bg-tertiary: #1a2236;
-  --bg-glass: rgba(18, 24, 38, 0.75);
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-tertiary: #141414;
+  --bg-glass: rgba(0, 0, 0, 0.75);
   --border-glass: rgba(255, 255, 255, 0.08);
-  --border-glass-focus: rgba(163, 230, 53, 0.3);
+  --border-glass-focus: rgba(250, 204, 21, 0.3);
   
-  --primary-neon: #a3e635; /* Neon Lime Green */
-  --primary-neon-glow: rgba(163, 230, 53, 0.4);
+  --primary-neon: #facc15; /* Yellow */
+  --primary-neon-glow: rgba(250, 204, 21, 0.4);
   --secondary-neon: #06b6d4; /* Electric Cyan */
   --secondary-neon-glow: rgba(6, 182, 212, 0.4);
   
