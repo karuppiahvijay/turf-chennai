@@ -1425,11 +1425,17 @@ footer {
   }
   
   header .navbar {
-    justify-content: center; /* Center logo on mobile */
+    justify-content: space-between;
   }
   
   .nav-actions {
-    display: none; /* Hide top CTA on mobile, users can use bottom nav */
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .nav-actions .btn-primary {
+    display: none;
   }
 
   /* Bottom bar layout */
