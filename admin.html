@@ -137,10 +137,21 @@
     .btn-confirm {
       border: 1px solid rgba(34, 197, 94, 0.5);
       color: #22c55e;
+      padding: 4px 8px;
     }
     .btn-confirm:hover {
       background: #22c55e;
       color: #000;
+    }
+
+    .btn-edit {
+      border: 1px solid rgba(59, 130, 246, 0.5);
+      color: #3b82f6;
+      padding: 4px 8px;
+    }
+    .btn-edit:hover {
+      background: #3b82f6;
+      color: #fff;
     }
 
     .btn-cancel {
@@ -222,12 +233,36 @@
 
     <!-- Reservations Table -->
     <div class="glass-panel" style="padding: 24px;">
-      <h3 style="color: var(--secondary-neon); margin-bottom: 20px; font-family: var(--font-headers);">📅 Booking Reservations</h3>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 style="color: var(--secondary-neon); font-family: var(--font-headers); margin: 0;">📅 Booking Reservations</h3>
+        <button id="admin-add-booking-btn" class="btn btn-primary" style="padding: 8px 16px; font-size: 1rem; font-weight: bold; background: var(--primary-neon); color: #000; display: flex; align-items: center; gap: 6px;"><span>➕</span> Add Booking</button>
+      </div>
+      
+      <!-- Quick Add/Edit Booking Form (Hidden by default) -->
+      <div id="admin-add-booking-form" style="display: none; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--border-glass);">
+        <h4 id="admin-form-title" style="margin-bottom: 15px; color: var(--text-primary); font-size: 1.1rem;">Quick Add Booking</h4>
+        <input type="hidden" id="edit-b-id" value="">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 15px;">
+          <input type="text" id="add-b-user" placeholder="User Name/Email" class="glass-panel" style="padding: 8px; border: 1px solid var(--border-glass); background: transparent; color: #fff;">
+          <input type="text" id="add-b-phone" placeholder="Phone Number" class="glass-panel" style="padding: 8px; border: 1px solid var(--border-glass); background: transparent; color: #fff;">
+          <select id="add-b-sport" class="glass-panel" style="padding: 8px; border: 1px solid var(--border-glass); background: #1a1a1a; color: #fff;">
+            <option value="Box Cricket">Box Cricket</option>
+            <option value="5-a-side Football">5-a-side Football</option>
+            <option value="Sand Volleyball">Sand Volleyball</option>
+          </select>
+          <input type="date" id="add-b-date" class="glass-panel" style="padding: 8px; border: 1px solid var(--border-glass); background: transparent; color: #fff;">
+          <input type="text" id="add-b-slot" placeholder="Time (e.g. 05:00 PM - 06:00 PM)" class="glass-panel" style="padding: 8px; border: 1px solid var(--border-glass); background: transparent; color: #fff;">
+          <input type="text" id="add-b-amount" placeholder="Amount (e.g. ₹1500)" class="glass-panel" style="padding: 8px; border: 1px solid var(--border-glass); background: transparent; color: #fff;">
+        </div>
+        <button id="admin-save-booking-btn" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.9rem;">Save</button>
+        <button id="admin-cancel-add-btn" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.9rem;">Cancel</button>
+      </div>
       <div class="admin-table-container">
         <table>
           <thead>
             <tr>
               <th>ID</th>
+              <th>Customer</th>
               <th>Sport</th>
               <th>Date</th>
               <th>Slot</th>
@@ -345,6 +380,10 @@
           tr.innerHTML = `
             <td style="font-family: monospace; font-weight: bold; color: var(--text-secondary);">${booking.id}</td>
             <td>
+              <div style="font-weight: 600; color: var(--primary-neon);">${booking.playerName || booking.userEmail || 'N/A'}</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">${booking.playerPhone || 'No Phone'}</div>
+            </td>
+            <td>
               <div style="font-weight: 600;">${booking.sportName}</div>
               <div style="font-size: 0.75rem; color: var(--text-muted);">${booking.addons.join(', ') || 'No addons'}</div>
             </td>
@@ -352,9 +391,11 @@
             <td>${booking.timeSlot}</td>
             <td>${booking.amountPaid}</td>
             <td><span class="status-badge ${badgeClass}">${booking.status}</span></td>
-            <td>
-              ${booking.status !== 'Confirmed' && booking.status !== 'Cancelled' ? `<button class="action-btn btn-confirm" data-id="${booking.id}">Confirm</button>` : ''}
-              ${booking.status !== 'Cancelled' ? `<button class="action-btn btn-cancel" data-id="${booking.id}">Cancel</button>` : ''}
+            <td style="white-space: nowrap;">
+              ${booking.status !== 'Confirmed' && booking.status !== 'Cancelled' ? `<button class="action-btn btn-confirm" data-id="${booking.id}" title="Confirm">✅</button>` : ''}
+              ${booking.status !== 'Cancelled' ? `<button class="action-btn btn-cancel" data-id="${booking.id}" title="Cancel">❌</button>` : ''}
+              <button class="action-btn btn-edit" data-id="${booking.id}" title="Edit">✏️</button>
+              <button class="action-btn btn-delete" data-id="${booking.id}" style="background: transparent; color: var(--accent-red); border: 1px solid var(--accent-red); padding: 4px 8px; margin-left: 5px;" title="Delete">🗑️</button>
             </td>
           `;
 
@@ -376,6 +417,41 @@
             updateBookingStatus(e.target.dataset.id, 'Cancelled');
           });
         });
+
+        document.querySelectorAll('.btn-delete').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            if(confirm("Are you sure you want to permanently delete this booking?")) {
+              deleteBooking(e.target.dataset.id);
+            }
+          });
+        });
+        document.querySelectorAll('.btn-edit').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const bookingId = e.target.dataset.id;
+            const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY)) || [];
+            const booking = bookings.find(b => b.id === bookingId);
+            if (booking) {
+              document.getElementById('edit-b-id').value = booking.id;
+              document.getElementById('add-b-user').value = booking.playerName || booking.userEmail || '';
+              document.getElementById('add-b-phone').value = booking.playerPhone || '';
+              // Match sport select text loosely
+              const sportSelect = document.getElementById('add-b-sport');
+              for (let i = 0; i < sportSelect.options.length; i++) {
+                if (sportSelect.options[i].text.toLowerCase().includes(booking.sportName.toLowerCase().split(' ')[0])) {
+                  sportSelect.selectedIndex = i;
+                  break;
+                }
+              }
+              document.getElementById('add-b-date').value = booking.dateString || '';
+              document.getElementById('add-b-slot').value = booking.timeSlot || '';
+              document.getElementById('add-b-amount').value = booking.amountPaid || '';
+              
+              document.getElementById('admin-form-title').textContent = 'Edit Booking ' + booking.id;
+              addBookingForm.style.display = 'block';
+              addBookingBtn.style.display = 'none';
+            }
+          });
+        });
       }
 
       function updateBookingStatus(bookingId, newStatus) {
@@ -389,6 +465,96 @@
         localStorage.setItem(BOOKINGS_KEY, JSON.stringify(bookings));
         renderDashboard();
       }
+
+      function deleteBooking(bookingId) {
+        let bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY)) || [];
+        bookings = bookings.filter(b => b.id !== bookingId);
+        localStorage.setItem(BOOKINGS_KEY, JSON.stringify(bookings));
+        renderDashboard();
+      }
+
+      // Add Booking Form Logic
+      const addBookingBtn = document.getElementById('admin-add-booking-btn');
+      const addBookingForm = document.getElementById('admin-add-booking-form');
+      const saveBookingBtn = document.getElementById('admin-save-booking-btn');
+      const cancelAddBtn = document.getElementById('admin-cancel-add-btn');
+
+      addBookingBtn.addEventListener('click', () => {
+        document.getElementById('edit-b-id').value = '';
+        document.getElementById('admin-form-title').textContent = 'Quick Add Booking';
+        document.getElementById('add-b-user').value = '';
+        document.getElementById('add-b-phone').value = '';
+        document.getElementById('add-b-date').value = '';
+        document.getElementById('add-b-slot').value = '';
+        document.getElementById('add-b-amount').value = '';
+        addBookingForm.style.display = 'block';
+        addBookingBtn.style.display = 'none';
+      });
+
+      cancelAddBtn.addEventListener('click', () => {
+        addBookingForm.style.display = 'none';
+        addBookingBtn.style.display = 'block';
+      });
+
+      saveBookingBtn.addEventListener('click', () => {
+        const editId = document.getElementById('edit-b-id').value;
+        const user = document.getElementById('add-b-user').value || 'Admin Added';
+        const phone = document.getElementById('add-b-phone').value || 'N/A';
+        const sport = document.getElementById('add-b-sport').value;
+        const date = document.getElementById('add-b-date').value;
+        const slot = document.getElementById('add-b-slot').value || 'N/A';
+        const amount = document.getElementById('add-b-amount').value || '₹0';
+
+        if (!date) return alert('Please select a date.');
+
+        let bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY)) || [];
+        
+        if (editId) {
+          // Update existing
+          bookings = bookings.map(b => {
+            if (b.id === editId) {
+              b.playerName = user;
+              b.playerPhone = phone;
+              b.userEmail = user;
+              b.sportId = sport.toLowerCase().replace(/ /g, '-');
+              b.sportName = sport;
+              b.dateString = date;
+              b.dateDisplay = new Date(date).toDateString();
+              b.timeSlot = slot;
+              b.amountPaid = amount;
+            }
+            return b;
+          });
+        } else {
+          // Add new
+          bookings.unshift({
+            id: "BK" + Math.floor(100000 + Math.random() * 900000),
+            userId: "admin_created",
+            playerName: user,
+            playerPhone: phone,
+            userEmail: user,
+            sportId: sport.toLowerCase().replace(/ /g, '-'),
+            sportName: sport,
+            turfImage: "assets/images/media__1781765407238.png",
+            dateString: date,
+            dateDisplay: new Date(date).toDateString(),
+            timeSlot: slot,
+            addons: [],
+            amountPaid: amount,
+            status: "Confirmed",
+            bookingDate: new Date().toLocaleDateString()
+          });
+        }
+
+        localStorage.setItem(BOOKINGS_KEY, JSON.stringify(bookings));
+        
+        // Reset and hide form
+        addBookingForm.style.display = 'none';
+        addBookingBtn.style.display = 'block';
+
+        renderDashboard();
+      });
+
     });
   </script>
 </body>

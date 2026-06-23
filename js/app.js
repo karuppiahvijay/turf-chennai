@@ -327,6 +327,14 @@ document.addEventListener("DOMContentLoaded", () => {
     
     if (!sport || !dateObj || !slot) return;
     
+    const userNameInput = document.getElementById("booking-user-name").value.trim();
+    const userPhoneInput = document.getElementById("booking-user-phone").value.trim();
+    
+    if (!userNameInput || !userPhoneInput) {
+      alert("Please provide your Full Name and Phone Number to complete the booking.");
+      return;
+    }
+    
     payBtn.disabled = true;
     payBtn.textContent = "Processing Booking Request...";
     
@@ -341,6 +349,10 @@ document.addEventListener("DOMContentLoaded", () => {
       
       const newBooking = {
         id: "BK" + Math.floor(100000 + Math.random() * 900000),
+        userId: auth && auth.currentUser ? auth.currentUser.uid : "guest",
+        userEmail: auth && auth.currentUser ? (auth.currentUser.email || auth.currentUser.phoneNumber || "Guest User") : "Guest",
+        playerName: userNameInput,
+        playerPhone: userPhoneInput,
         sportId: sport.id,
         sportName: sport.name,
         turfImage: sport.image,
@@ -359,6 +371,8 @@ document.addEventListener("DOMContentLoaded", () => {
       // Clear selections
       appState.selectedSlot = null;
       document.querySelectorAll(".addon-card-input").forEach(chk => chk.checked = false);
+      document.getElementById("booking-user-name").value = "";
+      document.getElementById("booking-user-phone").value = "";
       
       showToast(`Booking Successful! Slot reserved: ${slot}`, "success");
       
@@ -375,7 +389,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("bookings-dashboard-container");
     container.innerHTML = "";
     
-    if (appState.bookings.length === 0) {
+    // Filter bookings by current user
+    const currentUser = window.firebaseAuth && window.firebaseAuth.currentUser;
+    const currentUserId = currentUser ? currentUser.uid : "guest";
+    const userBookings = appState.bookings.filter(b => b.userId === currentUserId);
+    
+    if (userBookings.length === 0) {
       container.innerHTML = `
         <div class="empty-bookings-state glass-panel">
           <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
@@ -395,7 +414,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const listWrapper = document.createElement("div");
     listWrapper.className = "bookings-list";
 
-    appState.bookings.forEach(booking => {
+    userBookings.forEach(booking => {
       const card = document.createElement("div");
       card.className = "booking-item-card glass-panel";
       
