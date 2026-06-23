@@ -92,8 +92,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Render Sports Offered cards
     const sportsContainer = document.getElementById("sports-cards-container");
     sportsContainer.innerHTML = KICK_AND_FLICK_DATA.sports
-      .map(sport => `
-        <div class="sport-card glass-panel">
+      .map((sport, idx) => `
+        <div class="sport-card glass-panel reveal" style="transition-delay: ${idx * 0.15}s">
           <img src="${sport.image}" alt="${sport.name}" class="sport-card-img">
           <div class="sport-card-body">
             <h3>${sport.name}</h3>
@@ -124,8 +124,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Render Amenities icons
     const amenitiesContainer = document.getElementById("amenities-container");
     amenitiesContainer.innerHTML = KICK_AND_FLICK_DATA.amenities
-      .map(amenity => `
-        <div class="amenity-card">
+      .map((amenity, idx) => `
+        <div class="amenity-card reveal" style="transition-delay: ${idx * 0.05}s">
           <span class="amenity-icon-large">${amenity.icon}</span>
           <span style="font-weight: 600; font-size: 0.95rem;">${amenity.name}</span>
         </div>
@@ -442,8 +442,34 @@ document.addEventListener("DOMContentLoaded", () => {
     container.appendChild(listWrapper);
   }
 
+  // --- PREMIUM SCROLL REVEAL (IntersectionObserver) ---
+  function initScrollReveal() {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15
+    };
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    // Observe all elements with the 'reveal' class
+    setTimeout(() => {
+      document.querySelectorAll('.reveal').forEach(el => {
+        revealObserver.observe(el);
+      });
+    }, 100);
+  }
+
   // --- INITIALIZE APPLICATION ---
   initLandingPage();
   initScheduler();
+  initScrollReveal();
   handleRouting(); // Initial routing setup
 });
