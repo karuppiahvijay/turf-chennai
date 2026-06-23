@@ -1,4 +1,4 @@
-// Kick & Flick Arena - Application Controller
+// Kick & Flick Turf - Application Controller
 document.addEventListener("DOMContentLoaded", () => {
   // --- STATE ---
   let appState = {
@@ -385,7 +385,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
           <h3>No Active Bookings</h3>
-          <p>You haven't reserved any playing timeslots yet at Kick & Flick Arena. Reserve yours now!</p>
+          <p>You haven't reserved any playing timeslots yet at Kick & Flick Turf. Reserve yours now!</p>
           <a href="#book" class="btn btn-primary">Book Court Now</a>
         </div>
       `;

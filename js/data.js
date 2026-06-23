@@ -1,4 +1,4 @@
-// Dedicated data for Kick & Flick Arena - Ernavoor, Chennai
+// Dedicated data for Kick & Flick Turf - Ernavoor, Chennai
 const KICK_AND_FLICK_DATA = {
   name: "Kick & Flick Turf",
   tagline: "Ernavoor's Premier Multi-Sport Turf",

@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#0b0f19">
-  <title>Kick & Flick Arena - Premium Chennai Sports Turf</title>
+  <title>Kick & Flick Turf - Premium Chennai Sports Turf</title>
   <link rel="icon" type="image/jpeg" href="assets/images/kick_flick_logo.jpg">
   <link rel="stylesheet" href="css/styles.css">
   <style>
@@ -104,6 +104,26 @@
       height: 100%;
       border: none;
     }
+    /* Profile Dropdown & Modals */
+    .dropdown-item {
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .dropdown-item:hover {
+      background: rgba(255, 255, 255, 0.08) !important;
+      color: var(--primary-neon) !important;
+    }
+    .profile-avatar-btn {
+      transition: all 0.3s ease;
+    }
+    .profile-avatar-btn:hover {
+      background: var(--primary-neon) !important;
+      color: var(--bg-primary) !important;
+      box-shadow: 0 0 10px var(--primary-neon);
+    }
+    .modal-overlay {
+      display: none;
+      transition: all 0.3s ease;
+    }
   </style>
 </head>
 <body>
@@ -112,7 +132,7 @@
     <header>
       <div class="container navbar">
         <a href="#home" class="logo">
-          <img src="assets/images/kick_flick_logo.jpg" alt="Kick & Flick Arena Logo" style="height: 54px; width: auto; border-radius: 4px;">
+          <img src="assets/images/kick_flick_logo.jpg" alt="Kick & Flick Turf Logo" style="height: 54px; width: auto; border-radius: 4px;">
         </a>
         <nav>
           <ul class="nav-links">
@@ -124,6 +144,26 @@
         </nav>
         <div id="nav-actions-container" class="nav-actions" style="display: flex; gap: 10px; align-items: center;">
           <a id="login-btn" href="login.html" class="btn" style="padding: 6px 12px; font-size: 0.9rem; border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); text-decoration: none;">Login</a>
+          
+          <!-- Profile Dropdown Container -->
+          <div class="profile-dropdown-container" id="profile-dropdown-container" style="display: none; position: relative;">
+            <button id="profile-avatar-btn" class="profile-avatar-btn" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-primary); font-size: 1.1rem; outline: none;">
+              👤
+            </button>
+            <div class="profile-dropdown-menu" id="profile-dropdown-menu" style="display: none; position: absolute; right: 0; top: 44px; width: 220px; background: rgba(15, 15, 15, 0.98); border: 1px solid var(--border-glass); border-radius: 8px; backdrop-filter: blur(15px); z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.6); padding: 10px;">
+              <div style="padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 8px; word-break: break-all;">
+                <div style="font-size: 0.75rem; color: var(--text-secondary);">Logged in as</div>
+                <div id="profile-email-display" style="font-size: 0.85rem; font-weight: bold; color: var(--primary-neon); margin-top: 2px;">user@example.com</div>
+              </div>
+              <a href="#bookings" class="dropdown-item" style="display: flex; align-items: center; gap: 8px; padding: 8px; color: var(--text-primary); text-decoration: none; border-radius: 4px; font-size: 0.9rem;">📅 My Bookings</a>
+              <a href="#" id="change-pwd-btn" class="dropdown-item" style="display: flex; align-items: center; gap: 8px; padding: 8px; color: var(--text-primary); text-decoration: none; border-radius: 4px; font-size: 0.9rem;">🔑 Change Password</a>
+              <a href="admin.html" id="admin-link-btn" class="dropdown-item" style="display: flex; align-items: center; gap: 8px; padding: 8px; color: var(--secondary-neon); text-decoration: none; border-radius: 4px; font-size: 0.9rem;">🛠️ Admin Panel</a>
+              <div style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 8px; padding-top: 8px;">
+                <a href="#" id="logout-action-btn" class="dropdown-item" style="display: flex; align-items: center; gap: 8px; padding: 8px; color: #ff4a4a; text-decoration: none; border-radius: 4px; font-size: 0.9rem;">🚪 Logout</a>
+              </div>
+            </div>
+          </div>
+
           <a href="#book" class="btn btn-primary btn-sm">Book Slot Now</a>
         </div>
       </div>
@@ -252,12 +292,12 @@
           <div class="about-layout">
             <div class="reveal">
               <span class="badge badge-neon">World-Class Infrastructure</span>
-              <h2 style="font-size: 2.5rem; margin-top: 12px; margin-bottom: 20px;">Arena Amenities</h2>
+              <h2 style="font-size: 2.5rem; margin-top: 12px; margin-bottom: 20px;">Turf Amenities</h2>
               <p style="color: var(--text-secondary); margin-bottom: 24px;" id="about-desc-paragraph"></p>
               
               <div style="font-size: 0.95rem; display: flex; flex-direction: column; gap: 12px;">
                 <div>📍 <strong>Address:</strong> Kathivakkam High Road, Ernavoor, Chennai - 600057</div>
-                <div>📞 <strong>Phone:</strong> +91 80154 76567</div>
+                <div>📞 <strong>Phone:</strong> +91 98765 43210</div>
                 <div>✉️ <strong>Email:</strong> play@kickandflick.com</div>
               </div>
             </div>
@@ -300,11 +340,11 @@
     <footer>
       <div class="container footer-content">
         <div class="footer-brand">
-          <img alt="Kick & Flick Arena" style="height: 60px; width: auto; margin-bottom: 6px; border-radius: 4px;">
+          <img src=" " alt="Kick & Flick Turf" style="height: 60px; width: auto; margin-bottom: 6px; border-radius: 4px;">
           <p>Ernavoor's premium multi-sport turf.</p>
         </div>
         <div class="footer-copyright">
-          &copy; 2026 Kick & Flick Arena Chennai. All Rights Reserved.
+          &copy; 2026 Kick & Flick Turf Chennai. All Rights Reserved.
         </div>
       </div>
     </footer>
@@ -333,6 +373,27 @@
     <div class="toast-container" id="toast-container"></div>
   </div>
 
+  <!-- Change Password Modal -->
+  <div id="change-password-modal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 10000; align-items: center; justify-content: center;">
+    <div class="modal-content glass-panel" style="width: 100%; max-width: 400px; padding: 25px; border-radius: 12px; border: 1px solid var(--border-glass); background: rgba(15, 15, 15, 0.95); position: relative;">
+      <h3 style="margin-bottom: 20px; color: var(--primary-neon); display: flex; align-items: center; gap: 8px;">🔑 Change Password</h3>
+      <form id="changePasswordForm">
+        <div class="form-group" style="margin-bottom: 15px; display: flex; flex-direction: column; gap: 6px;">
+          <label for="newPassword" style="font-size: 0.85rem; color: var(--text-secondary);">New Password</label>
+          <input type="password" id="newPassword" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-glass); background: rgba(255,255,255,0.05); color: var(--text-primary); outline: none;">
+        </div>
+        <div class="form-group" style="margin-bottom: 20px; display: flex; flex-direction: column; gap: 6px;">
+          <label for="confirmNewPassword" style="font-size: 0.85rem; color: var(--text-secondary);">Confirm New Password</label>
+          <input type="password" id="confirmNewPassword" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-glass); background: rgba(255,255,255,0.05); color: var(--text-primary); outline: none;">
+        </div>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button type="button" id="close-change-pwd-modal" class="btn btn-secondary" style="padding: 8px 16px;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="padding: 8px 16px;">Update Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script src="js/data.js"></script>
   <script src="js/app.js"></script>
@@ -341,34 +402,125 @@
   <script type="module">
     document.addEventListener('DOMContentLoaded', () => {
       const loginBtn = document.getElementById('login-btn');
-      
+      const profileContainer = document.getElementById('profile-dropdown-container');
+      const profileAvatar = document.getElementById('profile-avatar-btn');
+      const profileMenu = document.getElementById('profile-dropdown-menu');
+      const profileEmailDisplay = document.getElementById('profile-email-display');
+      const changePwdBtn = document.getElementById('change-pwd-btn');
+      const changePwdModal = document.getElementById('change-password-modal');
+      const closePwdModalBtn = document.getElementById('close-change-pwd-modal');
+      const changePwdForm = document.getElementById('changePasswordForm');
+      const logoutActionBtn = document.getElementById('logout-action-btn');
+
+      // Dropdown toggle
+      if (profileAvatar) {
+        profileAvatar.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const show = profileMenu.style.display === 'block';
+          profileMenu.style.display = show ? 'none' : 'block';
+        });
+      }
+
+      document.addEventListener('click', () => {
+        if (profileMenu) profileMenu.style.display = 'none';
+      });
+
+      // Modals toggle
+      if (changePwdBtn) {
+        changePwdBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          profileMenu.style.display = 'none';
+          changePwdModal.style.display = 'flex';
+        });
+      }
+
+      if (closePwdModalBtn) {
+        closePwdModalBtn.addEventListener('click', () => {
+          changePwdModal.style.display = 'none';
+          changePwdForm.reset();
+        });
+      }
+
       // Wait a moment for Firebase to initialize
       setTimeout(() => {
         const auth = window.firebaseAuth;
-        const { onAuthStateChanged, signOut } = window.firebaseAuthMethods;
+        const { onAuthStateChanged, signOut, updatePassword } = window.firebaseAuthMethods;
 
         if (auth && onAuthStateChanged) {
           onAuthStateChanged(auth, (user) => {
-            if (user && loginBtn) {
-              // User is signed in
-              loginBtn.textContent = 'Logout';
-              loginBtn.href = '#';
-              
-              // Remove old listeners to prevent duplicates
-              const newBtn = loginBtn.cloneNode(true);
-              loginBtn.parentNode.replaceChild(newBtn, loginBtn);
-              
-              newBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                signOut(auth).then(() => {
-                  window.location.reload();
-                }).catch((error) => {
-                  console.error("Sign out error", error);
+            if (user) {
+              // User is signed in - Show Profile Avatar instead of login button
+              if (loginBtn) loginBtn.style.display = 'none';
+              if (profileContainer) profileContainer.style.display = 'block';
+
+              // Display user email or phone
+              const displayId = user.email || user.phoneNumber || "User Profile";
+              if (profileEmailDisplay) profileEmailDisplay.textContent = displayId;
+
+              // Hide change password if phone-only user
+              if (user.phoneNumber && !user.email) {
+                if (changePwdBtn) changePwdBtn.style.display = 'none';
+              } else {
+                if (changePwdBtn) changePwdBtn.style.display = 'flex';
+              }
+
+              // Bind Logout Action
+              if (logoutActionBtn) {
+                const newLogoutBtn = logoutActionBtn.cloneNode(true);
+                logoutActionBtn.parentNode.replaceChild(newLogoutBtn, logoutActionBtn);
+                newLogoutBtn.addEventListener('click', (e) => {
+                  e.preventDefault();
+                  signOut(auth).then(() => {
+                    window.location.reload();
+                  }).catch((error) => {
+                    console.error("Sign out error", error);
+                  });
                 });
-              });
+              }
+
+              // Bind Password Change Form Submit
+              if (changePwdForm) {
+                const newForm = changePwdForm.cloneNode(true);
+                changePwdForm.parentNode.replaceChild(newForm, changePwdForm);
+                newForm.addEventListener('submit', async (e) => {
+                  e.preventDefault();
+                  const newPwd = document.getElementById('newPassword').value;
+                  const confirmPwd = document.getElementById('confirmNewPassword').value;
+                  
+                  if (newPwd !== confirmPwd) {
+                    alert("Passwords do not match!");
+                    return;
+                  }
+
+                  if (newPwd.length < 6) {
+                    alert("Password must be at least 6 characters long.");
+                    return;
+                  }
+
+                  try {
+                    const submitBtn = newForm.querySelector('button[type="submit"]');
+                    submitBtn.textContent = 'Updating...';
+                    submitBtn.disabled = true;
+                    await updatePassword(auth.currentUser, newPwd);
+                    alert("Password updated successfully!");
+                    changePwdModal.style.display = 'none';
+                    newForm.reset();
+                    submitBtn.textContent = 'Update Password';
+                    submitBtn.disabled = false;
+                  } catch (error) {
+                    console.error(error);
+                    alert("Failed to update password. If you logged in a long time ago, please log out and log in again to perform this operation.");
+                    const submitBtn = newForm.querySelector('button[type="submit"]');
+                    submitBtn.textContent = 'Update Password';
+                    submitBtn.disabled = false;
+                  }
+                });
+              }
+
             } else {
-              // User is signed out - Enforce Login
-              window.location.href = 'login.html';
+              // User is signed out - Show Login button instead of avatar
+              if (loginBtn) loginBtn.style.display = 'block';
+              if (profileContainer) profileContainer.style.display = 'none';
             }
           });
         }

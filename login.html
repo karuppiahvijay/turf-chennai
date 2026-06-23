@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Kick & Flick Arena</title>
+  <title>Login - Kick & Flick Turf</title>
   <link rel="icon" type="image/jpeg" href="assets/images/kick_flick_logo.jpg">
   <style>
     :root {
@@ -243,13 +243,14 @@
           RecaptchaVerifier, 
           signInWithPhoneNumber,
           setPersistence, 
-          browserLocalPersistence 
+          browserLocalPersistence,
+          onAuthStateChanged
         } = window.firebaseAuthMethods;
 
         // --- AUTO-REDIRECT IF ALREADY LOGGED IN ---
         onAuthStateChanged(auth, (user) => {
           if (user) {
-            window.location.href = 'index.html';
+            window.location.href = 'index.html#home';
           }
         });
 
@@ -260,7 +261,7 @@
             await setPersistence(auth, browserLocalPersistence);
             const provider = new GoogleAuthProvider();
             await signInWithPopup(auth, provider);
-            window.location.href = 'index.html';
+            window.location.href = 'index.html#home';
           } catch (error) {
             console.error(error);
             alert("Google Login failed: " + error.message);
@@ -279,7 +280,7 @@
             btn.disabled = true;
             await setPersistence(auth, browserLocalPersistence);
             await signInWithEmailAndPassword(auth, email, password);
-            window.location.href = 'index.html';
+            window.location.href = 'index.html#home';
           } catch (error) {
             console.error(error);
             alert("Login failed: " + error.message);
@@ -332,7 +333,7 @@
             btn.disabled = true;
             await setPersistence(auth, browserLocalPersistence);
             await confirmationResult.confirm(otpCode);
-            window.location.href = 'index.html';
+            window.location.href = 'index.html#home';
           } catch (error) {
             console.error(error);
             alert("Invalid OTP: " + error.message);
