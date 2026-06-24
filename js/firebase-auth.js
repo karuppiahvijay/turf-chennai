@@ -13,7 +13,8 @@ import {
   signInWithPopup,
   RecaptchaVerifier,
   signInWithPhoneNumber,
-  updatePassword
+  updatePassword,
+  sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = {
@@ -43,5 +44,6 @@ window.firebaseAuthMethods = {
   signInWithPopup,
   RecaptchaVerifier,
   signInWithPhoneNumber,
-  updatePassword
+  updatePassword,
+  sendPasswordResetEmail
 };
