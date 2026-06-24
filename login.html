@@ -189,28 +189,6 @@
           <button type="submit" class="btn-login" id="btnEmailLogin">Login with Email</button>
         </form>
         <div class="toggle-link" id="forgotPasswordBtn" style="color: var(--primary-neon); margin-top: 12px; font-weight: 500;">Forgot Password?</div>
-        <div class="toggle-link" id="toggleToPhone">Log in with Mobile Number instead</div>
-      </div>
-
-      <!-- Phone Login Form -->
-      <div id="phone-form-section">
-        <form id="phoneForm">
-          <div class="form-group">
-            <label for="phoneNumber">Mobile Number (with Country Code)</label>
-            <input type="tel" id="phoneNumber" placeholder="+91 98765 43210" required>
-          </div>
-          <div id="recaptcha-container"></div>
-          <button type="submit" class="btn-login" id="btnSendOtp">Send OTP</button>
-        </form>
-        
-        <form id="otpForm" style="display: none; margin-top: 20px;">
-          <div class="form-group">
-            <label for="otpCode">Enter OTP</label>
-            <input type="text" id="otpCode" placeholder="123456" required>
-          </div>
-          <button type="submit" class="btn-login" id="btnVerifyOtp">Verify & Login</button>
-        </form>
-        <div class="toggle-link" id="toggleToEmail">Log in with Email instead</div>
       </div>
 
       <a href="register.html" class="register-link">Don't have an account? Register here</a>
@@ -221,19 +199,6 @@
   <script type="module" src="js/firebase-auth.js"></script>
   <script type="module">
     document.addEventListener('DOMContentLoaded', () => {
-      // Toggles
-      const emailSection = document.getElementById('email-form-section');
-      const phoneSection = document.getElementById('phone-form-section');
-      
-      document.getElementById('toggleToPhone').addEventListener('click', () => {
-        emailSection.style.display = 'none';
-        phoneSection.style.display = 'block';
-      });
-      document.getElementById('toggleToEmail').addEventListener('click', () => {
-        phoneSection.style.display = 'none';
-        emailSection.style.display = 'block';
-      });
-
       // Firebase Methods setup
       setTimeout(() => {
         const auth = window.firebaseAuth;

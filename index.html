@@ -476,9 +476,11 @@
       }
 
       if (closePwdModalBtn) {
-        closePwdModalBtn.addEventListener('click', () => {
-          changePwdModal.style.display = 'none';
-          changePwdForm.reset();
+        // Use event delegation on the document because the button might be replaced, or better yet, just listen on document for clicks
+        document.addEventListener('click', (e) => {
+          if (e.target && e.target.id === 'close-change-pwd-modal') {
+            if (changePwdModal) changePwdModal.style.display = 'none';
+          }
         });
       }
 
@@ -528,6 +530,8 @@
 
               // Bind Password Change Form Submit
               if (changePwdForm) {
+                // Clear any existing submit listeners by cloning, but we MUST re-bind the cancel button if we do, 
+                // which we fixed above using document.addEventListener
                 const newForm = changePwdForm.cloneNode(true);
                 changePwdForm.parentNode.replaceChild(newForm, changePwdForm);
                 newForm.addEventListener('submit', async (e) => {
@@ -536,10 +540,16 @@
                     const submitBtn = newForm.querySelector('button[type="submit"]');
                     submitBtn.textContent = 'Sending Email...';
                     submitBtn.disabled = true;
-                    await sendPasswordResetEmail(auth, user.email);
+                    
+                    const currentUser = auth.currentUser;
+                    if (!currentUser || !currentUser.email) {
+                      throw new Error("No email found for this user.");
+                    }
+                    
+                    await sendPasswordResetEmail(auth, currentUser.email);
                     alert("A password reset link has been sent to your email!");
-                    changePwdModal.style.display = 'none';
-                    newForm.reset();
+                    
+                    if (changePwdModal) changePwdModal.style.display = 'none';
                     submitBtn.textContent = 'Send Reset Link';
                     submitBtn.disabled = false;
                   } catch (error) {
