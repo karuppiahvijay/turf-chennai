@@ -97,12 +97,12 @@ document.addEventListener("DOMContentLoaded", () => {
           <img src="${sport.image}" alt="${sport.name}" class="sport-card-img">
           <div class="sport-card-body">
             <h3>${sport.name}</h3>
-            <div class="sport-price-tag">₹${sport.pricePerHour} / hour (Base Rate)</div>
-            <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 0.95rem;">
-              Play on our premium, shock-absorbing ${sport.name.includes("Sand") ? "sand pit" : "artificial turf"} court. Complete with professional netting and stadium floodlights.
+            <div class="sport-price-tag">₹${sport.pricePerHour} / hour</div>
+            <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 0.95rem; line-height: 1.4;">
+              Play on our premium ${sport.name.includes("Sand") ? "sand pit" : "artificial turf"}. Complete with professional netting and stadium floodlights.
             </p>
-            <a href="#book" class="btn btn-cyan btn-sm select-sport-btn" data-sport-id="${sport.id}" style="margin-top: auto;">
-              Select & Book Court
+            <a href="#book" class="btn btn-primary btn-sm select-sport-btn" data-sport-id="${sport.id}" style="align-self: flex-start; padding: 8px 16px; font-size: 0.9rem;">
+              Book Court
             </a>
           </div>
         </div>
@@ -125,9 +125,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const amenitiesContainer = document.getElementById("amenities-container");
     amenitiesContainer.innerHTML = KICK_AND_FLICK_DATA.amenities
       .map((amenity, idx) => `
-        <div class="amenity-card reveal" style="transition-delay: ${idx * 0.05}s">
-          <span class="amenity-icon-large">${amenity.icon}</span>
-          <span style="font-weight: 600; font-size: 0.95rem;">${amenity.name}</span>
+        <div class="amenity-card glass-panel reveal" style="transition-delay: ${idx * 0.05}s; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; border-radius: var(--radius-md);">
+          <span class="amenity-icon-large" style="font-size: 3rem; margin-bottom: 16px; filter: drop-shadow(0 0 10px rgba(250,204,21,0.5));">${amenity.icon}</span>
+          <span style="font-weight: 600; font-size: 1rem; color: var(--text-primary); letter-spacing: 0.5px;">${amenity.name}</span>
         </div>
       `).join("");
   }
