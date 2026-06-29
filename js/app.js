@@ -363,7 +363,30 @@ document.addEventListener("DOMContentLoaded", () => {
     const upiUri = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${finalPriceNum}.00&cu=INR&tn=Booking%20${bookingId}`;
     
     // Show Modal
-    const upiModal = document.getElementById("upi-payment-modal");
+    let upiModal = document.getElementById("upi-payment-modal");
+    if (!upiModal) {
+      upiModal = document.createElement("div");
+      upiModal.id = "upi-payment-modal";
+      upiModal.className = "modal-overlay";
+      upiModal.style.cssText = "display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 10000; align-items: center; justify-content: center;";
+      upiModal.innerHTML = `
+        <div class="modal-content glass-panel" style="width: 100%; max-width: 400px; padding: 30px; border-radius: 16px; border: 1px solid var(--border-glass); background: var(--bg-secondary); position: relative; text-align: center;">
+          <h3 style="margin-bottom: 8px; color: var(--primary-neon); font-size: 1.5rem;">Complete Payment</h3>
+          <p style="color: var(--text-secondary); margin-bottom: 24px; font-size: 0.95rem;">Amount due: <strong id="upi-modal-amount" style="color: var(--text-primary); font-size: 1.2rem;">₹0</strong></p>
+          <div style="background: white; padding: 16px; border-radius: 12px; display: inline-block; margin-bottom: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+            <img id="upi-qr-code" src="" alt="UPI QR Code" style="width: 200px; height: 200px; display: block;">
+          </div>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 24px;">Scan with GPay, PhonePe, or Paytm.<br>Or click below if you are on mobile.</p>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <a href="#" id="upi-pay-app-btn" class="btn btn-secondary" style="padding: 12px; font-weight: bold; background: #06b6d4; color: white; border-color: #06b6d4;">Open UPI App</a>
+            <button id="upi-confirm-paid-btn" class="btn btn-primary" style="padding: 12px; font-weight: bold;">I Have Paid</button>
+            <button id="close-upi-modal-btn" class="btn btn-secondary" style="padding: 10px; background: transparent; border: 1px solid var(--border-glass); color: var(--text-secondary);">Cancel Booking</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(upiModal);
+    }
+    
     document.getElementById("upi-modal-amount").textContent = finalPriceStr;
     
     // Generate QR Code using QRServer API
@@ -371,6 +394,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("upi-qr-code").src = qrImageUrl;
     
     // Setup Mobile App Link
+    document.getElementById("upi-pay-app-btn").href = upiUri;
     document.getElementById("upi-pay-app-btn").href = upiUri;
     
     upiModal.style.display = "flex";
