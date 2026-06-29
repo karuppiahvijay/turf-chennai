@@ -321,7 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const payBtn = document.getElementById("booking-btn-pay-now");
     if (appState.selectedSlot && appState.selectedDate) {
       payBtn.disabled = false;
-      payBtn.textContent = `Pay Simulated ₹${total}`;
+      payBtn.textContent = `Book & Pay via UPI (₹${total})`;
     } else {
       payBtn.disabled = true;
       payBtn.textContent = "Select Time Slot";
