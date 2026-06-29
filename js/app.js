@@ -8,6 +8,24 @@ document.addEventListener("DOMContentLoaded", () => {
     selectedSlot: null
   };
 
+  // --- THEME MANAGEMENT ---
+  const themeToggleBtn = document.getElementById("theme-toggle-btn");
+  const currentTheme = localStorage.getItem("turf_theme") || "dark";
+  
+  if (currentTheme === "light") {
+    document.body.classList.add("light-theme");
+    if (themeToggleBtn) themeToggleBtn.textContent = "🌙";
+  }
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener("click", () => {
+      document.body.classList.toggle("light-theme");
+      const isLight = document.body.classList.contains("light-theme");
+      localStorage.setItem("turf_theme", isLight ? "light" : "dark");
+      themeToggleBtn.textContent = isLight ? "🌙" : "☀️";
+    });
+  }
+
   // --- SPA ROUTER ---
   const routes = ["home", "sports", "book", "bookings"];
   
@@ -320,68 +338,98 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = "login.html";
       return;
     }
-
+    
+    const slot = appState.selectedSlot;
     const sport = appState.selectedSport;
     const dateObj = appState.selectedDate;
-    const slot = appState.selectedSlot;
-    
-    if (!sport || !dateObj || !slot) return;
-    
     const userNameInput = document.getElementById("booking-user-name").value.trim();
     const userPhoneInput = document.getElementById("booking-user-phone").value.trim();
+    
+    if (!slot || !sport || !dateObj) return;
     
     if (!userNameInput || !userPhoneInput) {
       alert("Please provide your Full Name and Phone Number to complete the booking.");
       return;
     }
     
-    payBtn.disabled = true;
-    payBtn.textContent = "Processing Booking Request...";
+    // Calculate final price string and numeric value
+    const finalPriceStr = document.getElementById("summary-total-price").textContent;
+    const finalPriceNum = finalPriceStr.replace(/[^0-9]/g, '');
+    const bookingId = "BK" + Math.floor(100000 + Math.random() * 900000);
     
-    setTimeout(() => {
-      // Gather addons
-      const addons = [];
-      document.querySelectorAll(".addon-card-input:checked").forEach(chk => {
-        addons.push(chk.parentNode.querySelector(".addon-title").textContent);
-      });
+    // Setup UPI Data
+    const upiId = "thutu@ptyes";
+    const payeeName = "Kick and Flick Turf";
+    const upiUri = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${finalPriceNum}.00&cu=INR&tn=Booking%20${bookingId}`;
+    
+    // Show Modal
+    const upiModal = document.getElementById("upi-payment-modal");
+    document.getElementById("upi-modal-amount").textContent = finalPriceStr;
+    
+    // Generate QR Code using QRServer API
+    const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUri)}`;
+    document.getElementById("upi-qr-code").src = qrImageUrl;
+    
+    // Setup Mobile App Link
+    document.getElementById("upi-pay-app-btn").href = upiUri;
+    
+    upiModal.style.display = "flex";
+    
+    // Handle Cancel
+    document.getElementById("close-upi-modal-btn").onclick = () => {
+      upiModal.style.display = "none";
+    };
+    
+    // Handle "I Have Paid"
+    document.getElementById("upi-confirm-paid-btn").onclick = () => {
+      const confirmBtn = document.getElementById("upi-confirm-paid-btn");
+      confirmBtn.textContent = "Verifying...";
+      confirmBtn.disabled = true;
       
-      const finalPrice = document.getElementById("summary-total-price").textContent;
-      
-      const newBooking = {
-        id: "BK" + Math.floor(100000 + Math.random() * 900000),
-        userId: auth && auth.currentUser ? auth.currentUser.uid : "guest",
-        userEmail: auth && auth.currentUser ? (auth.currentUser.email || auth.currentUser.phoneNumber || "Guest User") : "Guest",
-        playerName: userNameInput,
-        playerPhone: userPhoneInput,
-        sportId: sport.id,
-        sportName: sport.name,
-        turfImage: sport.image,
-        dateString: dateObj.dateString,
-        dateDisplay: `${dateObj.dayName}, ${dateObj.dayNum} June 2026`,
-        timeSlot: slot,
-        addons: addons,
-        amountPaid: finalPrice,
-        status: "Confirmed",
-        bookingDate: new Date().toLocaleDateString()
-      };
-      
-      appState.bookings.unshift(newBooking);
-      localStorage.setItem("turfnet_kick_flick_bookings", JSON.stringify(appState.bookings));
-      
-      // Clear selections
-      appState.selectedSlot = null;
-      document.querySelectorAll(".addon-card-input").forEach(chk => chk.checked = false);
-      document.getElementById("booking-user-name").value = "";
-      document.getElementById("booking-user-phone").value = "";
-      
-      showToast(`Booking Successful! Slot reserved: ${slot}`, "success");
-      
-      // Update slots and dashboard
-      loadSportScheduler();
-      
-      // Redirect to Bookings list
-      window.location.hash = "#bookings";
-    }, 1500);
+      setTimeout(() => {
+        // Gather addons
+        const addons = [];
+        document.querySelectorAll(".addon-card-input:checked").forEach(chk => {
+          addons.push(chk.parentNode.querySelector(".addon-title").textContent);
+        });
+        
+        const newBooking = {
+          id: bookingId,
+          userId: auth && auth.currentUser ? auth.currentUser.uid : "guest",
+          userEmail: auth && auth.currentUser ? (auth.currentUser.email || auth.currentUser.phoneNumber || "Guest User") : "Guest",
+          playerName: userNameInput,
+          playerPhone: userPhoneInput,
+          sportId: sport.id,
+          sportName: sport.name,
+          turfImage: sport.image,
+          dateString: dateObj.dateString,
+          dateDisplay: `${dateObj.dayName}, ${dateObj.dayNum} June 2026`,
+          timeSlot: slot,
+          addons: addons,
+          amountPaid: finalPriceStr,
+          status: "Pending Verification", // New status!
+          bookingDate: new Date().toLocaleDateString()
+        };
+        
+        appState.bookings.unshift(newBooking);
+        localStorage.setItem("turfnet_kick_flick_bookings", JSON.stringify(appState.bookings));
+        
+        // Clear selections
+        appState.selectedSlot = null;
+        document.querySelectorAll(".addon-card-input").forEach(chk => chk.checked = false);
+        document.getElementById("booking-user-name").value = "";
+        document.getElementById("booking-user-phone").value = "";
+        
+        upiModal.style.display = "none";
+        confirmBtn.textContent = "I Have Paid";
+        confirmBtn.disabled = false;
+        
+        showToast(`Booking ${bookingId} submitted for verification!`, "success");
+        
+        loadSportScheduler();
+        window.location.hash = "#bookings";
+      }, 1500);
+    };
   });
 
   // --- MY BOOKINGS DASHBOARD ---
@@ -425,18 +473,21 @@ document.addEventListener("DOMContentLoaded", () => {
       card.innerHTML = `
         <img src="${booking.turfImage}" alt="${booking.sportName}" class="booking-item-img">
         <div class="booking-item-content">
-          <span class="badge badge-cyan" style="margin-bottom: 8px;">${booking.sportName}</span>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span class="badge badge-cyan">${booking.sportName}</span>
+            <span class="badge" style="background: ${booking.status === 'Confirmed' ? '#22c55e' : '#f59e0b'}; color: white; border: none;">${booking.status}</span>
+          </div>
           <h3>${KICK_AND_FLICK_DATA.name}</h3>
           <div class="booking-item-details">
             <div>📍 <strong>${KICK_AND_FLICK_DATA.area}</strong></div>
             <div>📅 <strong>${booking.dateDisplay}</strong></div>
-            <div>⏰ <strong class="neon-text">${booking.timeSlot}</strong></div>
+            <div>⏰ <strong>${booking.timeSlot}</strong></div>
+            <div>💰 <strong>${booking.amountPaid}</strong></div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Booking ID: ${booking.id}</div>
           </div>
           ${addonsHTML}
         </div>
         <div class="booking-item-actions">
-          <span class="badge badge-neon">CONFIRMED</span>
-          <div style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary);">${booking.amountPaid}</div>
           <button class="btn btn-secondary btn-sm cancel-booking-btn" data-id="${booking.id}" style="padding: 6px 12px; font-size: 0.8rem; color: var(--accent-red); border-color: rgba(239, 68, 68, 0.2)">
             Cancel Slot
           </button>
